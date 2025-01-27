@@ -1,0 +1,36 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "KS API",
+      "description": "API documentation for KS application"
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "paths": {
+      "/auth/login": {
+        "post": {
+          "summary": "Login user",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {"type": "string"},
+                  "password": {"type": "string"}
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {"description": "Login successful"},
+            "401": {"description": "Invalid credentials"}
+          }
+        }
+      }
+    }
+  }
+  
