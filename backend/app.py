@@ -1,27 +1,23 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-from flask_swagger_ui import get_swaggerui_blueprint
 from routes import auth_bp, users_bp
-from config import Config
 
 # Initialize app
 app = Flask(__name__)
-app.config.from_object(Config)
+
+# App configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://neondb_owner:npg_QWYXOSC3JhM9@ep-red-moon-a83h1tud-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
+app.config['SECRET_KEY'] = "5fc6d8ab661706f61c16e1ddcf98a2778e259ec37b891e58d8b26e8ab8bf0d39af80844883ab5d63f5970741d5e2076efd3de1649acb47123daaa11f277332a1"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
-# Swagger UI setup
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
-swagger_ui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL, config={'app_name': "KS API"})
-app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
-
 # Register blueprints
-app.register_blueprint(auth_bp)
-app.register_blueprint(users_bp)
+app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(users_bp, url_prefix='/users')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run()
